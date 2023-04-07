@@ -1,0 +1,232 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: rgba(167, 220, 246, 0.8);
+  color: rgb(58, 132, 216);
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.microphone-wrapper {
+  padding-bottom: 5px;
+}
+
+.microphone-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0 20px 0;
+}
+.icon-container {
+  width: 80px;
+  height: 80px;
+  border-radius: 10%;
+  padding: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.microphone-icon-container {
+  background-image: linear-gradient(128deg, #cce9b3, #46bd1b);
+}
+
+.speaker-icon-container {
+  background-image: linear-gradient(128deg, #e9e8b3, #bdba1b);
+}
+
+.microphone-icon-container.listening {
+  background-image: linear-gradient(128deg, #fbc9c5, #e14110);
+}
+.speaker-icon-container.listening {
+  background-image: linear-gradient(128deg, #fbd9c5, #e16410);
+}
+
+.speaker-icon-container.listening::before {
+  content: "";
+  width: 80px;
+  height: 80px;
+  background-color: #ffffff81;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.4);
+  border-radius: 20%;
+  animation: listening infinite 1.5s;
+}
+.microphone-icon-container.listening::before {
+  content: "";
+  width: 80px;
+  height: 80px;
+  background-color: #ffffff81;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.4);
+  border-radius: 20%;
+  animation: listening infinite 1.5s;
+}
+@keyframes listening {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+}
+.microphone-icon {
+  width: 100%;
+  height: 100%;
+}
+.microphone-status {
+  margin: 20px 0px 0px -70px;
+  font-size: 2em;
+  color: #46bd1b;
+  min-width: 300px;
+}
+
+.speaker-status {
+  margin: 20px 0px 0px -70px;
+  font-size: 2em;
+  color: #c9c122;
+  min-width: 300px;
+}
+
+.microphone-status.listening {
+  color: #e14110;
+}
+.speaker-status.listening {
+  color: #e16410;
+}
+.btn {
+  border: none;
+  padding: 10px 30px;
+  margin-right: 10px;
+  outline: none;
+  background-color: rgb(200, 206, 207);
+  color: grey;
+  font-size: 15px;
+  border-radius: 3px;
+  box-shadow: 0px 0px 10px 5px #ffffff1a;
+}
+
+.microphone-result-container-in {
+  margin-top: 60px !important;
+}
+
+.microphone-result-container {
+  text-align: center;
+  height: 40vh;
+  background-color: #ffffff81;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 30px;
+  margin: 0 5vw 5vw 5vw;
+}
+.microphone-transcript {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 6vw;
+  font-size: 2.5em;
+  color: #2a498b;
+  margin-bottom: 5px;
+}
+
+.microphone-result-text {
+  margin-top: 30px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 1.5em;
+}
+.microphone-reset {
+  background: rgb(153, 174, 243);
+  color: rgb(12, 95, 19);
+  width: fit-content;
+}
+.microphone-reset:hover {
+  background: rgb(140, 164, 240);
+  color: rgb(24, 120, 32);
+  cursor: pointer;
+}
+.microphone-save {
+  background: rgb(153, 174, 243);
+  color: rgb(12, 95, 19);
+  width: fit-content;
+}
+.microphone-save:hover {
+  background: rgb(140, 164, 240);
+  color: rgb(24, 120, 32);
+  cursor: pointer;
+}
+
+.microphone-reset.disabled {
+  border: rgb(217, 209, 209);
+  color: rgb(54, 57, 54);
+  cursor: none;
+}
+
+.microphone-save.disabled {
+  border: rgb(217, 209, 209);
+  color: rgb(54, 57, 54);
+}
+
+.speechSettings {
+  display: grid;
+  grid-gap: 15px;
+}
+
+.speechSettings > select {
+  height: 30px;
+}
+
+@media (max-width: 420px) {
+  li {
+    font-size: 0.4em;
+  }
+  .btn {
+    padding: 10px 20px;
+  }
+}
+@media (max-width: 800px) {
+  .microphone-result-container-in {
+    margin-top: 40px !important;
+  }
+  .microphone-transcript {
+    font-size: 1.5em;
+  }
+  .microphone-status {
+    margin: 20px 0px 0px -30px;
+    font-size: 1.2em;
+  }
+  .speaker-status {
+    margin: 20px 0px 0px -30px;
+    font-size: 1.2em;
+  }
+
+  .microphone-icon-container .speaker-icon-container {
+    width: 60px;
+    height: 60px;
+  }
+}
+@media (max-width: 490px) {
+  .microphone-status {
+    display: none;
+  }
+  .speaker-status {
+    display: none;
+  }
+
+  .microphone-transcript {
+    font-size: 1em;
+  }
+  .btn {
+    padding: 10px 20px;
+  }
+}

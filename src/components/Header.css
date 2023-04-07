@@ -1,0 +1,40 @@
+.header-container {
+  margin: 10px 0 10px 0;
+  display: flex;
+  color: rgb(42, 73, 139);
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 5000px) {
+  h1 {
+    font-size: 6em;
+  }
+}
+@media screen and (max-width: 1200px) {
+  h1 {
+    font-size: 5em;
+  }
+}
+@media screen and (max-width: 900px) {
+  h1 {
+    font-size: 4em;
+  }
+}
+@media screen and (max-width: 730px) {
+  h1 {
+    font-size: 3.5em;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 3em;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 2em;
+  }
+}
