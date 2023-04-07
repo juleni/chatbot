@@ -1,13 +1,15 @@
+import { Configuration, OpenAIApi } from "openai";
 import { useEffect, useRef, useState } from "react";
 import { useSpeechSynthesis } from "react-speech-kit";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import "./App.css";
+import Chatbot from "./components/Chatbot";
 import Dialog from "./components/Dialog";
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import microPhoneIcon from "./microphone.svg";
+import questionIcon from "./question.svg";
 import settingsIcon from "./settings.svg";
 import speakerIcon from "./speaker.svg";
 
@@ -45,6 +47,19 @@ function App() {
     },
   ];
 
+  const [configuration, setConfiguration] = useState();
+  const [generatedResponse, setGeneratedResponse] = useState("");
+
+  const openai = new OpenAIApi(configuration);
+
+  useEffect(() => {
+    setConfiguration(
+      new Configuration({
+        apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+      })
+    );
+  }, []);
+
   const onEnd = () => {
     stopHandleSpeak();
   };
@@ -55,25 +70,20 @@ function App() {
   });
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isQuestion, setIsQuestion] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [showSpeechSettings, setShowSpeechSettings] = useState(false);
   const [voiceIndex, setVoiceIndex] = useState(null);
   const microphoneRef = useRef(null);
   const microphoneStatusRef = useRef(null);
   const microphoneResetButtonRef = useRef(null);
+  const questionRef = useRef(null);
+  const questionStatusRef = useRef(null);
+
   const speakerRef = useRef(null);
   const speakerStatusRef = useRef(null);
 
-  const languagesArray = [
-    "sk-SK",
-    "en-US",
-    "de-DE",
-    "es-ES",
-    "it-IT",
-    "fr-FR",
-    "pl-PL",
-    "ru-RU",
-  ];
+  const languagesArray = ["sk-SK", "en-US"];
 
   const voice = voices[voiceIndex] || null;
 
@@ -115,7 +125,40 @@ function App() {
       setIsSpeaking(true);
       speakerRef.current.classList.add("listening");
       speakerStatusRef.current.classList.add("listening");
-      speak({ text: transcript, voice });
+    }
+  };
+
+  function generate() {
+    setGeneratedResponse("asking chatbot ... ");
+    /**
+    openai
+      .createCompletion({
+        model: "text-davinci-003",
+        prompt: `Napíš slovenskú básničku o: ${transcript}`,
+        temperature: 0.8,
+        max_tokens: 1000,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      })
+      .then((response) => {
+        const generatedText = response.data.choices[0].text;
+        setGeneratedResponse(generatedText);
+      });
+ */
+    return generatedResponse;
+  }
+
+  const handleQuestion = () => {
+    stopHandle();
+    if (isQuestion) {
+      // already asking chatbot
+    } else {
+      setIsQuestion(true);
+      questionRef.current.classList.add("listening");
+      questionStatusRef.current.classList.add("listening");
+
+      generate();
     }
   };
   const stopHandle = () => {
@@ -168,6 +211,17 @@ function App() {
             <img src={microPhoneIcon} className="microphone-icon" />
             <div className="microphone-status" ref={microphoneStatusRef}>
               {isListening ? "STOP Listening" : "START Listening"}
+            </div>
+          </div>
+          {/** Ask Question */}
+          <div
+            className="icon-container question-icon-container"
+            ref={questionRef}
+            onClick={handleQuestion}
+          >
+            <img src={questionIcon} className="question-icon" />
+            <div className="question-status" ref={questionStatusRef}>
+              {isQuestion ? "ASKING chatbot" : "ASK chatbot"}
             </div>
           </div>
           {/** Speaker */}
@@ -224,7 +278,7 @@ function App() {
           </div>
         </div>
         {/** Footer */}
-        <Footer />
+        <Chatbot />
       </div>
 
       <Dialog
