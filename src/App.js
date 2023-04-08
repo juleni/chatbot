@@ -46,6 +46,7 @@ function App() {
       },
     },
   ];
+  const DEFAULT_RESPONSE = "asking chatbot ... ";
 
   const [configuration, setConfiguration] = useState();
   const [generatedResponse, setGeneratedResponse] = useState("");
@@ -55,7 +56,7 @@ function App() {
   useEffect(() => {
     setConfiguration(
       new Configuration({
-        apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+        apiKey: "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", //process.env.REACT_APP_OPENAI_API_KEY,
       })
     );
   }, []);
@@ -125,16 +126,16 @@ function App() {
       setIsSpeaking(true);
       speakerRef.current.classList.add("listening");
       speakerStatusRef.current.classList.add("listening");
+      speak({ text: generatedResponse });
     }
   };
 
   function generate() {
-    setGeneratedResponse("asking chatbot ... ");
-    /**
+    setGeneratedResponse(DEFAULT_RESPONSE);
     openai
       .createCompletion({
         model: "text-davinci-003",
-        prompt: `Napíš slovenskú básničku o: ${transcript}`,
+        prompt: transcript,
         temperature: 0.8,
         max_tokens: 1000,
         top_p: 1,
@@ -144,21 +145,32 @@ function App() {
       .then((response) => {
         const generatedText = response.data.choices[0].text;
         setGeneratedResponse(generatedText);
+        setIsQuestion(false);
+        questionRef.current.classList.remove("listening");
+        questionStatusRef.current.classList.remove("listening");
+        speakerRef.current.classList.remove("disabled");
+        speakerStatusRef.current.classList.remove("disabled");
+        microphoneRef.current.classList.remove("disabled");
+        microphoneStatusRef.current.classList.remove("disabled");
       });
- */
-    return generatedResponse;
   }
 
   const handleQuestion = () => {
-    stopHandle();
-    if (isQuestion) {
-      // already asking chatbot
-    } else {
-      setIsQuestion(true);
-      questionRef.current.classList.add("listening");
-      questionStatusRef.current.classList.add("listening");
+    if (transcript !== null && transcript.length > 0) {
+      stopHandle();
+      if (isQuestion) {
+        // already asking chatbot
+      } else {
+        setIsQuestion(true);
+        questionRef.current.classList.add("listening");
+        questionStatusRef.current.classList.add("listening");
+        speakerRef.current.classList.add("disabled");
+        speakerStatusRef.current.classList.add("disabled");
+        microphoneRef.current.classList.add("disabled");
+        microphoneStatusRef.current.classList.add("disabled");
 
-      generate();
+        generate();
+      }
     }
   };
   const stopHandle = () => {
@@ -278,7 +290,7 @@ function App() {
           </div>
         </div>
         {/** Footer */}
-        <Chatbot />
+        <Chatbot generatedResponse={generatedResponse} />
       </div>
 
       <Dialog
