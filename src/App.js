@@ -56,7 +56,7 @@ function App() {
   useEffect(() => {
     setConfiguration(
       new Configuration({
-        apiKey: "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", //process.env.REACT_APP_OPENAI_API_KEY,
+        apiKey: "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", //process.env.REACT_APP_OPENAI_API_KEY,
       })
     );
   }, []);
