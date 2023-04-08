@@ -18,8 +18,8 @@
   margin-bottom: 5px;
 }
 .chatbot-text {
-  margin: 20px 10px 20px 60px;
-  font-size: 2em;
+  margin: 10px 10px 10px 10px;
+  font-size: 1.2em;
 }
 
 @media (max-width: 850px) {
@@ -28,5 +28,9 @@
   }
   .chatbot-header {
     font-size: 1.5em;
+  }
+  .chatbot-text {
+    margin: 10px 10px 10px 10px;
+    font-size: 1em;
   }
 }

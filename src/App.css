@@ -42,6 +42,13 @@ body {
   background-image: linear-gradient(128deg, #d8ada3, #d44e21);
 }
 
+.microphone-icon-container.disabled {
+  background-image: linear-gradient(128deg, #ddd8d8, #a7a2a0);
+}
+.speaker-icon-container.disabled {
+  background-image: linear-gradient(128deg, #ddd8d8, #a7a2a0);
+}
+
 .microphone-icon-container.listening {
   background-image: linear-gradient(128deg, #fbc9c5, #e14110);
 }
@@ -121,13 +128,22 @@ body {
   min-width: 300px;
 }
 .microphone-status.listening {
+  margin: 20px 0px 0px -24px;
   color: #e14110;
 }
 .speaker-status.listening {
+  margin: 20px 0px 0px -24px;
   color: #e16410;
 }
 .question-status.listening {
+  margin: 20px 0px 0px -28px;
   color: #117ed2;
+}
+.microphone-status.disabled {
+  color: #85817f;
+}
+.speaker-status.disabled {
+  color: #85817f;
 }
 .btn {
   border: none;
@@ -257,5 +273,8 @@ body {
   }
   .btn {
     padding: 10px 20px;
+  }
+  .microphone-result-text {
+    font-size: 1em;
   }
 }
