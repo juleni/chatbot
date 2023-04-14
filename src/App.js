@@ -47,7 +47,6 @@ function App() {
   ];
   const DEFAULT_RESPONSE = "asking chatbot ... ";
 
-  const [configuration, setConfiguration] = useState();
   const [generatedResponse, setGeneratedResponse] = useState("");
   let messages = [];
 
