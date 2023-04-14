@@ -1,4 +1,3 @@
-import { Configuration, OpenAIApi } from "openai";
 import { useEffect, useRef, useState } from "react";
 import { useSpeechSynthesis } from "react-speech-kit";
 import SpeechRecognition, {
@@ -50,16 +49,7 @@ function App() {
 
   const [configuration, setConfiguration] = useState();
   const [generatedResponse, setGeneratedResponse] = useState("");
-
-  const openai = new OpenAIApi(configuration);
-
-  useEffect(() => {
-    setConfiguration(
-      new Configuration({
-        apiKey: "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", //process.env.REACT_APP_OPENAI_API_KEY,
-      })
-    );
-  }, []);
+  let messages = [];
 
   const onEnd = () => {
     stopHandleSpeak();
@@ -132,19 +122,22 @@ function App() {
 
   function generate() {
     setGeneratedResponse(DEFAULT_RESPONSE);
-    openai
-      .createCompletion({
-        model: "text-davinci-003",
-        prompt: transcript,
-        temperature: 0.8,
-        max_tokens: 1000,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      })
-      .then((response) => {
-        const generatedText = response.data.choices[0].text;
-        setGeneratedResponse(generatedText);
+    const newMessage = { role: "user", content: `${transcript}` };
+    messages.push(newMessage);
+
+    fetch("https://julenifunctionapp.azurewebsites.net/api/gptfunction?", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const newAssistantMessage = {
+          role: "assistant",
+          content: `${data.completion.content}`,
+        };
+        messages.push(newAssistantMessage);
+        setGeneratedResponse(newAssistantMessage.content);
         setIsQuestion(false);
         questionRef.current.classList.remove("listening");
         questionStatusRef.current.classList.remove("listening");
